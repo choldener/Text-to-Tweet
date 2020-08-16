@@ -12,7 +12,8 @@ import random
 def tweets_to_images(
 file, 
 tweet_image,
-info = False
+bar = False,
+date = False
 ):
     try:
         os.makedirs('output')
@@ -34,37 +35,44 @@ info = False
         draw.text ((185,80), tweet, font = font, fill = (0,0,0))
         x_text,y_text = draw.textsize(tweet, font=font)
         x_text,y_text = x_text + 85,y_text + 85
-        if info == True:
-            random_info(image, draw, x_text, y_text)
+        if bar == True:
+            bar_info(image, draw, x_text, y_text)
         image.save('output/output_' + str(idx+1) + '.png')
 
-def random_info(image, draw, x_text, y_text):
-    box = Image.open(r'\'resources\box_no_info.png')
-    font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=30)
-    image.paste(box, box=(185, y_text))
-    likes = random.randrange(0,1000)
-    retweets = random.randrange(0,1000)
-    comments = random.randrange(0,100)
-    date = random.randrange(0,1)
-    ######## Still need to figure out coords on image
-    # draw.text((), likes, font=font, fill = (101,119,134))
-    # draw.text((), retweets, font=font, fill = (101,119,134))
-    # draw.text((), comments, font=font, fill = (101,119,134))
-    # draw.text((), date, font=font, fill = (101,119,134))
-    ########
-
-def testing_function (file, tweet_image, info = True):
+def testing_function (file, tweet_image, info = True, date = True, bar = True):
     image = Image.open(tweet_image)
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=37)
-    tweet = "We are getting the Commercial Fishing Industry in Maine back on track (will be better than ever) after suffering years of stupidity and abuse from the previous administration. Already got 5000 square miles back and available to fish. China & E.U. told to drop their Tariffs now!!!"
+    tweet = ""
     tweet = "\n".join(textwrap.wrap(tweet, width=75))
     draw.text ((185,80), tweet, font = font, fill = (0,0,0))
     x_text,y_text = draw.textsize(tweet, font=font)
     x_text,y_text = x_text + 85,y_text + 85
-    if info == True:
-        random_info(image, draw, x_text, y_text)
-    image.save(r'D:\Github\Projects\Tweet-to-image\output5.png')
+    # if date == True:
+    #     date_info()
+    if bar == True:
+        bar_info(image, draw, x_text, y_text)
+    image.save(r'D:\Github\Projects\Tweet-to-image\output4.png')
+
+def bar_info(image, draw, x_text, y_text):
+    box = Image.open(r'resources\bar_no_data.png')
+    font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=35)
+    image.paste(box, box=(185, y_text))
+    date = random.randrange(0,1)
+    print('parmas set')
+    print(draw) 
+    ######## Still need to figure out coords on image
+    draw.text((250, y_text+19), str(random.randrange(0,100)), font=font, fill = (101,119,134))
+    draw.text((565, y_text+19), str(random.randrange(0,1000)), font=font, fill = (101,119,134))
+    draw.text((865, y_text+19), str(random.randrange(0,1000)), font=font, fill = (101,119,134))
+    draw.text((950, 25), str(date), font=font, fill = (101,119,134))
+    ########
+
+# def date_info(image, draw):
+#     box = Image.open(r'resources\date_dot.png')
+#     font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=35)
+#     image.paste(box, box=(950, 25))
+#     draw.text((950,25), str(random.randrange(1,23)) + 'h', font = font, fill = (101,119,134))
     
 if __name__ == "__main__":
     fire.Fire(tweets_to_images)
