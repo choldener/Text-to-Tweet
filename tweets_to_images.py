@@ -68,11 +68,11 @@ def bar_info(image, draw, x_text, y_text):
     draw.text((950, 25), str(date), font=font, fill = (101,119,134))
     ########
 
-# def date_info(image, draw):
-#     box = Image.open(r'resources\date_dot.png')
-#     font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=35)
-#     image.paste(box, box=(950, 25))
-#     draw.text((950,25), str(random.randrange(1,23)) + 'h', font = font, fill = (101,119,134))
+def date_info(image, draw):
+    box = Image.open(r'resources\date_dot.png')
+    font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=35)
+    image.paste(box, box=(950, 25))
+    draw.text((950,25), ' · '+str(random.randrange(1,23)) + 'h', font = font, fill = (101,119,134))
     
 if __name__ == "__main__":
     fire.Fire(tweets_to_images)
