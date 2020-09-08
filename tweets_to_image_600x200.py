@@ -19,8 +19,8 @@ character_color = False
 ):
     image = Image.open(tweet_image)
     base_width, base_height = image.size
-    if base_width != 600 & base_height != 200: raise #base_width / base_height != 5: raise
-    else: pass
+    #if base_width != 600 & base_height != 200: raise ValueError#base_width / base_height != 5: raise
+    #else: pass
 
     try:
         os.makedirs('output')
@@ -39,7 +39,9 @@ character_color = False
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=15)
         tweet = "\n".join(textwrap.wrap(tweet, width=75))
-        if character_color == True: linebyline(tweet=tweet, font=font, draw=draw)
+        x_text,y_text = draw.textsize(tweet, font=font)
+        y_text = y_text + 45
+        if character_color == True: line_by_line(tweet=tweet, font=font, draw=draw)
         else:
             draw.text ((75,36-6), tweet, font = font, fill = (0,0,0))
             x_text,y_text = draw.textsize(tweet, font=font)
@@ -49,14 +51,15 @@ character_color = False
         image.save('output/output_' + str(idx+1) + '.png')
 
 
-def testing_function (tweet_image, date = True, bar = True, chracter_color=True):
+def testing_function (tweet_image, date = True, bar = True, character_color=True):
     image = Image.open(tweet_image)
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=15)
     tweet = "The Democrats, together with the corrupt Fake News Media, have launched a massive Disinformation Campaign the likes of which has never been seen before. They will say anything, like their recent lies about me and the Military, and hope that it sticks... But #MAGA gets it!"
     tweet = "\n".join(textwrap.wrap(tweet, width=75))
-    
-    if character_color == True: linebyline(tweet=tweet, font=font, draw=draw)
+    x_text,y_text = draw.textsize(tweet, font=font)
+    y_text = y_text + 45
+    if character_color == True: line_by_line(tweet=tweet, font=font, draw=draw)
     else: 
         draw.text ((75,36-6), tweet, font = font, fill = (0,0,0))
         x_text,y_text = draw.textsize(tweet, font=font)
@@ -92,40 +95,45 @@ def date_info(image, draw, tweet_image): #have to utilize cv2 due to variable na
 
 def line_by_line(tweet, font, draw):
     tweet_list = tweet.splitlines()
-    ybase = 36
+    ybase = 36-6
     for tweet_line in tweet_list:
+        #print(tweet_line)
         xbase = 75
         character_instance = False
         space_instance = False
         start_index=0
         for i, c  in enumerate(tweet_line):
             if c == '#' or c=='@':
+                #print('Character true')
                 character_instance = True #Shows that a character is in that line
                 character_index = i
-                draw.text((xbase,ybase), tweet_line[start_index:character_index],font=font, full=(0,0,0)) #words before hashtag
+                draw.text((xbase,ybase), tweet_line[start_index:character_index],font=font, fill=(0,0,0)) #words before hashtag
                 x,y = draw.textsize(tweet_line[start_index:character_index],font=font)
                 xbase = xbase + x
-                for n,c in enumerate(tweet, start=character_index):
-                    if c == ' ':
+                for n,c in enumerate(tweet_line[i:], character_index):
+                    if c == ' ' or ')' or ']':
                         space_instance = True
                         space_index = n
                         word = tweet_line[character_index:space_index] #the hashtag
-                        draw.text(xbase,ybase), word, font=font, fill =(0,0,0))) #add blue color
+                        draw.text((xbase,ybase), word, font=font, fill =(27, 149, 224))
                         x,y = draw.textsize(word, font=font)
                         xbase = xbase + x
                         start_index = space_index
                         break
                     else: pass
                 if space_instance == False:
-                    draw.text((xbase,ybase), tweet_line[i:], font = font, fill = (0,0,0)) #add blue color
+                    draw.text((xbase,ybase), tweet_line[i:], font = font, fill = (27, 149, 224))
             else: pass
         if character_instance == False: # if character is not in a line after reading it, then it pastes it as default
-            draw.text((xbase,ybase), n, font = font, fil = (0,0,0))
-            
+            #print('no character')
+            draw.text((xbase,ybase), tweet_line, font = font, fill = (0,0,0))
+        if character_instance == True & space_instance == True:
+            draw.text((xbase,ybase), tweet_line[space_index:], font=font,fill=(0,0,0))
         x,y = draw.textsize(tweet_line, font=font)
         ybase = ybase + y #goes down the line.
         
 # if __name__ == "__main__":
 #     fire.Fire(tweets_to_images)
 
-testing_function(tweet_image = r"D:\Github\Projects\Tweet-to-image\templates\Trump_600x200_blank.png", date = True, bar = True)
+#testing_function(tweet_image = r"D:\Github\Projects\Tweet-to-image\templates\Trump_600x200_blank.png", date = True, bar = True,character_color=True)
+tweets_to_images(file=r"D:\Github\Projects\Tweet-to-image\realDonaldTrump_tweets.csv",  tweet_image=r"D:\Github\Projects\Tweet-to-image\templates\Trump_600x200_blank.png", bar = True, date = True, character_color = True)
