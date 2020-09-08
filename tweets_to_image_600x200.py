@@ -55,7 +55,7 @@ def testing_function (tweet_image, date = True, bar = True, character_color=True
     image = Image.open(tweet_image)
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=15)
-    tweet = "The Democrats, together with the corrupt Fake News Media, have launched a massive Disinformation Campaign the likes of which has never been seen before. They will say anything, like their recent lies about me and the Military, and hope that it sticks... But #MAGA gets it!"
+    tweet = "The Democrats, together #correup #media with #help the corrupt Fake News Media, have launched a massive Disinformation Campaign the likes of which has never been seen before. They will say anything, like their recent lies about me and the Military, and hope that it sticks... But #MAGA gets it!"
     tweet = "\n".join(textwrap.wrap(tweet, width=75))
     x_text,y_text = draw.textsize(tweet, font=font)
     y_text = y_text + 45
@@ -111,10 +111,11 @@ def line_by_line(tweet, font, draw):
                 x,y = draw.textsize(tweet_line[start_index:character_index],font=font)
                 xbase = xbase + x
                 for n,c in enumerate(tweet_line[i:], character_index):
-                    if c == ' ' or ')' or ']':
+                    if c == ' ' or c== ')' or c== ']':
                         space_instance = True
                         space_index = n
                         word = tweet_line[character_index:space_index] #the hashtag
+                        print(word)
                         draw.text((xbase,ybase), word, font=font, fill =(27, 149, 224))
                         x,y = draw.textsize(word, font=font)
                         xbase = xbase + x
@@ -135,5 +136,5 @@ def line_by_line(tweet, font, draw):
 # if __name__ == "__main__":
 #     fire.Fire(tweets_to_images)
 
-#testing_function(tweet_image = r"D:\Github\Projects\Tweet-to-image\templates\Trump_600x200_blank.png", date = True, bar = True,character_color=True)
-tweets_to_images(file=r"D:\Github\Projects\Tweet-to-image\realDonaldTrump_tweets.csv",  tweet_image=r"D:\Github\Projects\Tweet-to-image\templates\Trump_600x200_blank.png", bar = True, date = True, character_color = True)
+testing_function(tweet_image = r"D:\Github\Projects\Tweet-to-image\templates\Trump_600x200_blank.png", date = True, bar = True, character_color=True)
+#tweets_to_images(file=r"D:\Github\Projects\Tweet-to-image\realDonaldTrump_tweets.csv",  tweet_image=r"D:\Github\Projects\Tweet-to-image\templates\Trump_600x200_blank.png", bar = True, date = True, character_color = True)
