@@ -14,7 +14,9 @@ def tweets_to_images(
 file, 
 tweet_image,
 bar = False,
-date = False #adding date dramatically decreases performance due to addition of computer vision
+date = False, #adding date dramatically decreases performance due to addition of computer vision
+rescale = False,
+rescale_size =(0,0),
 ):
     image = Image.open(tweet_image)
     base_width, base_height = image.size
@@ -77,10 +79,6 @@ def date_info(image, draw, tweet_image): #have to utilize cv2 due to variable na
     contours, hierarchy = cv2.findContours(dilation, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)[-2:]
     cnt = contours[1]
     x,y,w,h = cv2.boundingRect(cnt)
-    # cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
-    # cv2.imshow("Wall Detection", img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
     
     font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeuisl.ttf', size=35)
     draw.text((x+w-4,y+1), ' · '+str(random.randrange(1,23)) + 'h', font = font, fill = (101,119,134))
