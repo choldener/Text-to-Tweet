@@ -16,7 +16,8 @@ def tweets_to_images(
         tweet_image,
         bar=False,
         date=False,  # adding date dramatically decreases performance due to addition of computer vision
-        character_color=False
+        character_color=False,
+        watermark=False
 ):
     image = Image.open(tweet_image)
 
@@ -47,6 +48,7 @@ def tweets_to_images(
             y_text = y_text + 45
         if bar == True: bar_info(image, draw, x_text, y_text)
         if date == True: date_info(image, draw, tweet_image)
+        if watermark == True: add_watermark(image)
         image.save('output/output_' + str(idx + 1) + '.png')
 
 
@@ -71,6 +73,11 @@ def date_info(image, draw, tweet_image):  # have to utilize cv2 due to variable 
 
     font = ImageFont.truetype(r'C:\Windows\Fonts\Segoeui.ttf', size=15)
     draw.text((x + w - 6, y + 5), ' · ' + str(random.randrange(1, 23)) + 'h', font=font, fill=(101, 119, 134))
+
+
+def add_watermark(image):
+    watermark_img = Image.open(r'resources\watermark.png')
+    image.paste(watermark_img,(0,0), watermark_img)
 
 
 def line_by_line(tweet, font, draw):
